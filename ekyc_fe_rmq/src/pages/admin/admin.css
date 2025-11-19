@@ -1,0 +1,183 @@
+/* =======================
+   Admin Container
+======================= */
+.admin-container {
+  max-width: 1500px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9fc;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.admin-title {
+  text-align: center;
+  font-size: 2rem;
+  color: #4b2b7f;
+  margin-bottom: 30px;
+}
+
+/* =======================
+   Error / No Data
+======================= */
+.admin-error {
+  color: #d32f2f;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.no-data-msg {
+  color: #555;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+/* =======================
+   Table Styling
+======================= */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.admin-table thead {
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  color: #fff;
+  font-weight: 600;
+}
+
+.admin-table tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+  transition: background-color 0.3s;
+}
+
+.admin-table tbody tr:hover {
+  background-color: #f1f1ff;
+  cursor: pointer;
+}
+
+.admin-table td button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+/* =======================
+   Buttons
+======================= */
+.view-btn {
+  background-color: #6a11cb;
+  color: #fff;
+}
+
+.view-btn:hover {
+  background-color: #2575fc;
+}
+
+.generate-btn {
+  background-color: #ff6b6b;
+  color: #fff;
+}
+
+.generate-btn:hover {
+  background-color: #ff3b3b;
+}
+
+.close-btn {
+  background-color: #555;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin-top: 20px;
+  font-weight: 500;
+}
+
+.close-btn:hover {
+  background-color: #333;
+}
+
+/* =======================
+   Modal Styling
+======================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background-color: #fff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  animation: slideDown 0.3s ease-out;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  color: #4b2b7f;
+  margin-bottom: 15px;
+}
+
+.modal-content {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.5;
+}
+
+.download-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.download-btn:hover {
+  background-color: #45a049;
+}
+
+
+/* =======================
+   Animations
+======================= */
+@keyframes slideDown {
+  0% {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
