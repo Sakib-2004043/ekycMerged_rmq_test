@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
   res.send('🚀 KYC Backend Server Running with RabbitMQ...');
 });
 
-// =================== SERVER + DB + RABBITMQ ===================
+// ================ SERVER + DB + RABBITMQ ================
 const PORT = process.env.PORT || 3200;
 
 (async () => {
