@@ -15,7 +15,6 @@ async function publishMessage(data) {
       Buffer.from(JSON.stringify(data)),
       { persistent: true }
     );
-
     console.log("📤 Published:", data);
   } catch (error) {
     console.error("❌ Publish Error:", error);
