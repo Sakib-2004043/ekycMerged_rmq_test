@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import kycService from "../../services/kycService";
+import "./user.css";
 
 export default function UserLanding() {
   const navigate = useNavigate();
@@ -30,12 +31,67 @@ export default function UserLanding() {
     verifyUser();
   }, [navigate]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return (
+    <div className="loading-container">
+      <div className="loading-spinner"></div>
+      <p>Loading your dashboard...</p>
+    </div>
+  );
 
   return (
-    <div>
-      <h1>Welcome to User Dashboard</h1>
-      <p>This is the landing page for normal users.</p>
+    <div className="user-dashboard">
+      <div className="user-hero">
+        <h1>Welcome to Your Dashboard</h1>
+        <p>Manage your KYC verification and profile information</p>
+      </div>
+
+      <div className="dashboard-grid">
+        <div className="dashboard-card">
+          <div className="card-icon">✅</div>
+          <h3>KYC Status</h3>
+          <p className="status-badge verified">Verified</p>
+          <p className="card-description">Your identity has been successfully verified</p>
+        </div>
+
+        <div className="dashboard-card">
+          <div className="card-icon">📄</div>
+          <h3>Documents</h3>
+          <p className="card-description">View and manage your submitted documents</p>
+          <button className="card-button">View Documents</button>
+        </div>
+
+        <div className="dashboard-card">
+          <div className="card-icon">👤</div>
+          <h3>Profile</h3>
+          <p className="card-description">Update your personal information</p>
+          <button className="card-button">Edit Profile</button>
+        </div>
+
+        <div className="dashboard-card">
+          <div className="card-icon">🔔</div>
+          <h3>Notifications</h3>
+          <p className="card-description">Check your recent notifications</p>
+          <button className="card-button">View All</button>
+        </div>
+      </div>
+
+      <div className="info-section">
+        <h2>Quick Information</h2>
+        <div className="info-grid">
+          <div className="info-item">
+            <span className="info-label">Account Type:</span>
+            <span className="info-value">Standard User</span>
+          </div>
+          <div className="info-item">
+            <span className="info-label">Member Since:</span>
+            <span className="info-value">2024</span>
+          </div>
+          <div className="info-item">
+            <span className="info-label">Verification Level:</span>
+            <span className="info-value">Level 2</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

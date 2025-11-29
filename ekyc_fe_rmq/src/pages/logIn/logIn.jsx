@@ -23,7 +23,11 @@ export default function Login() {
         const verifyResponse = await kycService.verifyEmail(email); // send email to get type
         const userType = verifyResponse.user?.type;
 
-        // 3️⃣ Navigate based on type and pass email
+        // 3️⃣ Save to localStorage for navbar context
+        localStorage.setItem('email', email);
+        localStorage.setItem('userType', userType);
+
+        // 4️⃣ Navigate based on type and pass email
         if (userType === "admin") {
           navigate("/admin", { state: { email } });
         } else {

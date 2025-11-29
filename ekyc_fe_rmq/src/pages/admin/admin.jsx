@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import kycService from "../../services/kycService";
 import adminService from "../../services/adminService";
@@ -20,6 +20,39 @@ export default function Admin() {
 
   // ✅ Row-specific loading state for AI generation
   const [generatingIds, setGeneratingIds] = useState([]); // array of user._id currently generating
+  const pollingIntervalRef = useRef(null);
+
+  // Function to fetch KYC data
+  const fetchKycData = useCallback(async () => {
+    try {
+      const response = await adminService.getAllKycData(email);
+      if (response.success) {
+        setKycData(response.data);
+        
+        // Check if any previously generating IDs now have descriptions
+        setGeneratingIds(prev => {
+          const updatedGeneratingIds = prev.filter(id => {
+            const user = response.data.find(u => u._id === id);
+            return user && (!user.status || user.status === "Pending");
+          });
+          
+          // If all jobs are complete, stop polling
+          if (updatedGeneratingIds.length === 0 && prev.length > 0) {
+            if (pollingIntervalRef.current) {
+              clearInterval(pollingIntervalRef.current);
+              pollingIntervalRef.current = null;
+            }
+          }
+          
+          return updatedGeneratingIds;
+        });
+      } else {
+        setError(response.message || "Failed to fetch data.");
+      }
+    } catch (err) {
+      console.error("Error fetching KYC data:", err);
+    }
+  }, [email]);
 
   useEffect(() => {
     if (!email) {
@@ -37,13 +70,7 @@ export default function Admin() {
           return;
         }
 
-        const response = await adminService.getAllKycData(email);
-        if (response.success) {
-          setKycData(response.data);
-        } else {
-          setError(response.message || "Failed to fetch data.");
-        }
-
+        await fetchKycData();
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -52,7 +79,14 @@ export default function Admin() {
     };
 
     fetchAdminData();
-  }, [email, navigate]);
+
+    // Cleanup polling on unmount
+    return () => {
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current);
+      }
+    };
+  }, [email, navigate, fetchKycData]);
 
   // ✅ Function to open modal
   const handleViewDescription = (description) => {
@@ -76,22 +110,52 @@ export default function Admin() {
       const response = await adminService.generateDescription(user);
 
       if (response.success) {
-        // Optionally show a quick message
-        alert("Job queued. The page will reload in 10 seconds to show the AI description.");
-
-        // Wait 10 seconds then reload page to fetch updated data
+        // Start polling for updates every 3 seconds
+        if (!pollingIntervalRef.current) {
+          pollingIntervalRef.current = setInterval(() => {
+            fetchKycData();
+          }, 3000);
+        }
+        
+        // Show success notification without blocking
+        const notification = document.createElement('div');
+        notification.className = 'success-notification';
+        notification.textContent = '✓ AI description generation started. Updates will appear automatically.';
+        document.body.appendChild(notification);
+        
         setTimeout(() => {
-          window.location.reload();
-        }, 10000);
+          notification.classList.add('fade-out');
+          setTimeout(() => notification.remove(), 500);
+        }, 4000);
       } else {
-        alert(response.message || "Failed to queue job.");
         // Remove loading state if failed
         setGeneratingIds((prev) => prev.filter((id) => id !== user._id));
+        
+        // Show error notification
+        const notification = document.createElement('div');
+        notification.className = 'error-notification';
+        notification.textContent = `✗ ${response.message || "Failed to queue job."}`;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+          notification.classList.add('fade-out');
+          setTimeout(() => notification.remove(), 500);
+        }, 4000);
       }
     } catch (err) {
       console.error("❌ Error generating AI description:", err);
-      alert(err.message || "Something went wrong!");
       setGeneratingIds((prev) => prev.filter((id) => id !== user._id));
+      
+      // Show error notification
+      const notification = document.createElement('div');
+      notification.className = 'error-notification';
+      notification.textContent = `✗ ${err.message || "Something went wrong!"}`;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.classList.add('fade-out');
+        setTimeout(() => notification.remove(), 500);
+      }, 4000);
     }
   };
 
