@@ -27,6 +27,7 @@ app.use(cookieParser());
 
 // =================== ROUTES ===================
 const kycRoute = require('./routes/kycRoute');
+const { consumeQueue } = require('./rabbitMQ/consumer');
 app.use('/api/kyc', kycRoute);
 
 app.get('/', (req, res) => {
@@ -50,6 +51,9 @@ const PORT = process.env.PORT || 3200;
     app.listen(PORT, () => {
       console.log(`✅ Server running → http://localhost:${PORT}`);
     });
+
+    // Start RabbitMQ Consumer
+    consumeQueue();
 
   } catch (err) {
     console.error('❌ Startup Error:', err);

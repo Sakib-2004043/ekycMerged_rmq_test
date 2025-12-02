@@ -46,6 +46,7 @@ async function handleGenerateDescription(body) {
 
   const aiResponse = await axios({
     method: "post",
+    // url: "https://openrouter.ai/api/v1/chat/completions",
     url: "https://openrouter.ai/api/v1/chat/completions",
     headers: {
       Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
