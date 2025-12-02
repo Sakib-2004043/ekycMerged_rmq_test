@@ -1,0 +1,137 @@
+╔════════════════════════════════════════════════════════════════╗
+║           🗄️ MONGODB DATABASE QUICK REFERENCE 🗄️            ║
+╚════════════════════════════════════════════════════════════════╝
+
+📊 CONNECTION INFO
+════════════════════════════════════════════════════════════════
+Host:          localhost
+Port:          27017
+Username:      root
+Password:      password123
+Database:      ekyc_db
+Auth Source:   admin
+
+CONNECTION URI:
+mongodb://root:password123@localhost:27017/ekyc_db?authSource=admin
+
+════════════════════════════════════════════════════════════════
+🔓 3 WAYS TO ACCESS YOUR DATABASE
+════════════════════════════════════════════════════════════════
+
+WAY 1: DOCKER SHELL (Fastest)
+─────────────────────────────────────────────────────────────
+Command:
+  docker compose exec mongodb mongosh -u root -p password123
+
+Then type:
+  use ekyc_db
+  show collections
+  db.collection_name.find().pretty()
+
+WAY 2: MONGODB COMPASS (Visual - Best for Browsing)
+─────────────────────────────────────────────────────────────
+1. Download: https://www.mongodb.com/products/compass
+2. Open Compass
+3. Click "New Connection"
+4. Paste: mongodb://root:password123@localhost:27017/ekyc_db?authSource=admin
+5. Click "Connect"
+
+WAY 3: LOCAL MONGOSH (If Installed)
+─────────────────────────────────────────────────────────────
+Command:
+  mongosh "mongodb://root:password123@localhost:27017/ekyc_db?authSource=admin"
+
+════════════════════════════════════════════════════════════════
+📋 MONGOSH COMMANDS (Use in Database Shell)
+════════════════════════════════════════════════════════════════
+
+BASIC COMMANDS:
+  show collections                    # List all collections
+  db.stats()                          # Database statistics
+  db.collection_name.countDocuments() # Count documents
+
+QUERY COMMANDS:
+  db.users.find()                     # Get all documents
+  db.users.find().pretty()            # Pretty print
+  db.users.findOne()                  # Get first document
+  db.users.find({email: "x@y.com"})   # Filter by email
+
+INSERT:
+  db.users.insertOne({name: "John", email: "john@example.com"})
+
+UPDATE:
+  db.users.updateOne({name: "John"}, {$set: {name: "Jane"}})
+
+DELETE:
+  db.users.deleteOne({name: "John"})
+
+EXIT:
+  exit
+
+════════════════════════════════════════════════════════════════
+🛠️ DOCKER COMMANDS
+════════════════════════════════════════════════════════════════
+
+Check MongoDB status:
+  docker compose ps mongodb
+
+View MongoDB logs:
+  docker compose logs mongodb
+
+Restart MongoDB:
+  docker compose restart mongodb
+
+Backup database:
+  docker compose exec mongodb mongodump -u root -p password123 -d ekyc_db
+
+════════════════════════════════════════════════════════════════
+📁 FILES FOR MORE HELP
+════════════════════════════════════════════════════════════════
+
+📄 DATABASE_ACCESS.md       - Detailed access guide
+📄 MONGODB_EXAMPLES.md      - Code examples for Python/Node.js
+📄 QUICK_START.md          - General project quick start
+
+════════════════════════════════════════════════════════════════
+⚠️ IMPORTANT NOTES
+════════════════════════════════════════════════════════════════
+
+✓ Data persists in Docker volumes (safe even if containers stop)
+✓ To delete all data: docker compose down -v
+✓ Change credentials in .env files before production
+✓ Use MongoDB Compass for visual database browser
+✓ Backend is already connected to this database
+
+════════════════════════════════════════════════════════════════
+🎯 MOST COMMON USE CASES
+════════════════════════════════════════════════════════════════
+
+CHECK DATABASE CONTENTS:
+  1. docker compose exec mongodb mongosh -u root -p password123
+  2. use ekyc_db
+  3. show collections
+  4. db.collection_name.find().pretty()
+
+BROWSE WITH GUI:
+  1. Download MongoDB Compass
+  2. Use URI: mongodb://root:password123@localhost:27017/ekyc_db?authSource=admin
+
+INSERT TEST DATA:
+  db.users.insertOne({email: "test@example.com", name: "Test User"})
+
+VIEW STATISTICS:
+  db.stats()
+
+════════════════════════════════════════════════════════════════
+💡 QUICK TIPS
+════════════════════════════════════════════════════════════════
+
+• Use .pretty() for readable output
+• Count documents: db.collection.countDocuments()
+• Type 'exit' to leave the shell
+• Copy commands without quotes
+• MongoDB Compass is easiest for beginners
+
+════════════════════════════════════════════════════════════════
+Last Updated: December 2, 2025
+════════════════════════════════════════════════════════════════
